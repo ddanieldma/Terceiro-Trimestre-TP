@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 
+//Lista de itens do dropdown
+const List<String> dropDownItems = <String>[
+  "Adulto",
+  "Criança ou adolescente",
+  "Gestante ou lactante",
+  "Sensível á cafeína"
+];
+
 const List<Widget> coffeesList = <Widget>[
   Text('Espresso'),
   Text('Coado')
@@ -33,7 +41,7 @@ class _HomeState extends State<Home> {
   TextEditingController cafeController = TextEditingController();
 
   //Dropdown
-  String _dropdownValue = "";
+  String _dropdownValue = dropDownItems.first;
 
   //Toggle button
   final List<bool> _selectedCoffee = <bool>[true, false];
@@ -46,10 +54,9 @@ class _HomeState extends State<Home> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void _resetFields(){
-    _formKey = GlobalKey<FormState>();
-
-    cafeController.text = "";
     setState(() {
+      _formKey = GlobalKey<FormState>();
+      cafeController.text = "";
       _textInfo = "Informe seus dados";
     });
   }
@@ -76,28 +83,28 @@ class _HomeState extends State<Home> {
       }
 
       //alterando o info
-      if(perfil == "adulto" && cafeina > 400){
+      if(perfil == dropDownItems[0] && cafeina > 400){
         _textInfo = "Dose diária recomendada excedida";
       }
-      else if(perfil == "adulto" && cafeina <= 400){
+      else if(perfil == dropDownItems[0]  && cafeina <= 400){
         _textInfo = "Tudo certo";
       }
-      if(perfil == "crianca" && cafeina > 100){
+      if(perfil == dropDownItems[1] && cafeina > 100){
         _textInfo = "Dose diária recomendada excedida";
       }
-      else if(perfil == "crianca" && cafeina <= 100){
+      else if(perfil == dropDownItems[1] && cafeina <= 100){
         _textInfo = "Tudo certo";
       }
-      if(perfil == "gestante" && cafeina > 200){
+      if(perfil == dropDownItems[2] && cafeina > 200){
         _textInfo = "Dose diária recomendada excedida";
       }
-      else if(perfil == "gestante" && cafeina <= 200){
+      else if(perfil == dropDownItems[2] && cafeina <= 200){
         _textInfo = "Tudo certo";
       }
-      if(perfil == "sensivel" && cafeina > 200){
+      if(perfil == dropDownItems[3] && cafeina > 200){
         _textInfo = "Dose diária recomendada excedida";
       }
-      else if(perfil == "sensivel" && cafeina <= 200){
+      else if(perfil == dropDownItems[3] && cafeina <= 200){
         _textInfo = "Tudo certo";
       }
     });
@@ -140,29 +147,13 @@ class _HomeState extends State<Home> {
                     height: 1,
                     color: Colors.brown,
                   ),
-                  items: const[
-                    DropdownMenuItem(child: Text("Selecione"), value: ""),
-                    DropdownMenuItem(child: Text("Adulto",
-                      style: TextStyle(
-                        color: Colors.brown,
-                      ),
-                    ), value: "adulto"),
-                    DropdownMenuItem(child: Text("Criança ou adolescente",
-                      style: TextStyle(
-                        color: Colors.brown,
-                      ),
-                    ), value: "crianca"),
-                    DropdownMenuItem(child: Text("Gestante ou lactante",
-                      style: TextStyle(
-                        color: Colors.brown,
-                      ),
-                    ), value: "gestante"),
-                    DropdownMenuItem(child: Text("Sensível á cafeína",
-                      style: TextStyle(
-                        color: Colors.brown,
-                      ),
-                    ), value: "sensivel"),
-                  ],
+                  items:
+                    dropDownItems.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
                   value: _dropdownValue,
                   onChanged: dropdownCallback,
                 ),
